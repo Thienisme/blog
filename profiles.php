@@ -48,12 +48,18 @@ if (isset($_GET['id'])) {
                     <?php
                     // fetch category from categories table using category_id of post
                     $category_id = $post['category_id'];
-                    $category_query = "SELECT * FROM categories WHERE id = $category_id";
-                    $category_result = mysqli_query($connection, $category_query);
-                    $category  = mysqli_fetch_assoc($category_result);
+                    if (!is_null($category_id)) {
+                        $category_query = "SELECT * FROM categories WHERE id = $category_id";
+                        $category_result = mysqli_query($connection, $category_query);
+                        $category  = mysqli_fetch_assoc($category_result);
+                    }
 
                     ?>
-                    <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $post['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                    <?php if (is_null($category_id)) : ?>
+                        <div class="category__button">Uncategory</div>
+                    <?php else : ?>
+                        <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $post['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                    <?php endif; ?>
                     <h3 class="post__title">
                         <a href="<?= ROOT_URL ?>post.php?id=<?= $post['id'] ?>"><?= $post['title'] ?></a>
                     </h3>
@@ -65,7 +71,9 @@ if (isset($_GET['id'])) {
                             <img src="./images/<?= $author['avatar'] ?>">
                         </div>
                         <div class="post__author-info">
-                            <a href="<?= ROOT_URL ?>profiles.php?id=<?= $author['id'] ?>"><h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5></a>
+                            <a href="<?= ROOT_URL ?>profiles.php?id=<?= $author['id'] ?>">
+                                <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                            </a>
                             <small>
                                 <?= date("M d, Y - H:i", strtotime($post['date_time'])) ?>
                             </small>
