@@ -1,10 +1,51 @@
 <?php
 include 'partials/header.php';
 
+// fetch current user's posts from database
+$current_user_id = $_SESSION['user-id'];
+$query = "SELECT id, title, category_id, is_published, date_time FROM posts WHERE author_id = $current_user_id ORDER BY id DESC";
+$posts = mysqli_query($connection, $query);
 ?>
 
 
 <section class="dashboard">
+<?php if (isset($_SESSION['add-post-success'])) : //hiển thị nếu thêm post thành công  ?>
+            <div class="alert__message success container">
+                <p>
+                <?= 
+                    $_SESSION['add-post-success'];
+                    unset($_SESSION['add-post-success']);
+                ?>
+                </p>
+            </div>
+<?php elseif (isset($_SESSION['edit-post-success'])) : //hiển thị nếu sửa post thành công  ?>
+            <div class="alert__message success container">
+                <p>
+                <?= 
+                    $_SESSION['edit-post-success'];
+                    unset($_SESSION['edit-post-success']);
+                ?>
+                </p>
+            </div>
+<?php elseif (isset($_SESSION['edit-post'])) : //hiển thị nếu sửa post không thành công  ?>
+            <div class="alert__message error container">
+                <p>
+                <?= 
+                    $_SESSION['edit-post'];
+                    unset($_SESSION['edit-post']);
+                ?>
+                </p>
+            </div>
+<?php elseif (isset($_SESSION['delete-post-success'])) : //hiển thị nếu xóa post thành công  ?>
+            <div class="alert__message success container">
+                <p>
+                <?= 
+                    $_SESSION['delete-post-success'];
+                    unset($_SESSION['delete-post-success']);
+                ?>
+                </p>
+            </div>
+<?php endif ?>
     <div class="container dashboard__container">
         <aside>
             <ul>
@@ -37,47 +78,46 @@ include 'partials/header.php';
             </ul>
         </aside>
         <main>
-            <h2>Manage Users</h2>
+            <h2>Manage Post</h2>
+            <?php if (mysqli_num_rows($posts) > 0) : ?>
             <table>
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Category</th>
+                        <th>Status</th>
+                        <th>Created at</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php while ($post = mysqli_fetch_assoc($posts)) : ?>
+                        <!-- get category title of each post from categories table -->
+                        <?php 
+                        $category_id = $post['category_id'];
+                        if (!is_null($category_id)) {
+                            $category_query = "SELECT title FROM categories WHERE id = $category_id";
+                            $category_result = mysqli_query($connection, $category_query);   
+                            $category = mysqli_fetch_assoc($category_result);
+                        }
+                        ?>
                     <tr>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                        <td>Yes</td>
+                        <td><?= $post['title'] ?></td>
+                        <td><?= is_null($category_id) ? 'Uncategory' : $category['title'] ?></td>
+                        <td><?= $post['is_published'] == 1 ? 'Published' : 'Unpublished' ?></td>
+                        <td><?= date("M d, Y - H:i", strtotime($post['date_time'])) ?></td>
+                        <td><a href="<?= ROOT_URL ?>admin/edit-post.php?id=<?= $post['id'] ?>" 
+                        class="btn sm">Edit</a></td>
+                        <td><a href="<?= ROOT_URL ?>admin/delete-post.php?id=<?= $post['id'] ?>" 
+                        class="btn sm danger">Delete</a></td>                        
                     </tr>
-                    <tr>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                        <td>Yes</td>
-                    </tr>
+                    <?php endwhile ?>
                 </tbody>
             </table>
+            <?php else : ?>
+                <div class="alert__messager error"><?= "No posts found" ?></div>
+            <?php endif ?>
         </main>
     </div>
 </section>

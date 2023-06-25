@@ -30,12 +30,12 @@
     padding: 0;
     outline: 0;
     border: 0;
-    appearance: none;
     list-style: none;
     text-decoration: none;
 }
 
 body{
+    font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
     color: var(--color-white);
     overflow-x: hidden;
@@ -185,10 +185,16 @@ nav button{
     margin-top: 1.2rem;
 }
 .post__author-avatar{
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: var(--card-border-radius-3);
+    display: flex;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     overflow: hidden;
+}
+.post__author-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 /*===========================================FEATURE==================================*/
 .featured{
@@ -362,7 +368,6 @@ footer ul li{
     width: var(--form-width);
 }
 .alert__message{
-    
     padding: 0.8rem 1.4rem;
     margin-bottom: 1rem;
     border-radius: var(--card-border-radius-2);
@@ -459,4 +464,127 @@ input, textarea, select{
     color: var(--color-white);
     cursor: default;
     transition: var(--transition);
+}
+.alert__message.lg {
+    text-align: center;
+}
+
+.comment-box,
+.post-comment .list{
+    border-radius: 6px;
+    box-shadow:2px 2px 2px white;
+    background: var(--color-primary-variant);
+}
+.comment-session{
+    width: 650px;
+    height: auto;
+    margin: 0 auto;
+    
+}
+.post-comment .list{
+    width: 100%;
+    margin-bottom: 12px;
+}
+.post-comment .list .user{
+    margin-top: 30px;
+    display: flex;
+    padding: 8px;
+    overflow: hidden;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+.post-comment .list .user .info{
+    display: flex;
+    gap: 0.5rem;
+}
+.post-comment .list .user img{
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+}
+.comment-session .name{
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.post-comment .list .day{
+    font-size: 12px;
+}
+.post-comment .comment-post{
+    padding: 8px;
+    white-space: normal;
+    line-break: anywhere;
+}
+.comment-box{
+    padding: 10px;
+    overflow: hidden;
+}
+.comment-box .user{
+    display: flex;
+    gap: 0.5rem;
+}
+.comment-box .image img{
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+.comment-box textarea{
+    height: 130px;
+    margin: 10px 0;
+    padding: 10px;
+    resize: inherit;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px;
+    width: 80%;
+}
+.comment-box textarea :focus-visible{
+    box-shadow: inset 0 0 0 1px #009cff;
+    outline: none;
+}
+.comment-box .comment-submit{
+    float: right;
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background: #009cff;
+    color: #eee;
+    width: 60px;
+    height: 30px;
+}
+
+.user_profile{
+    margin-top: 7rem;
+}
+
+.user_info{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.2rem;
+}
+.user_info-avatar{
+    display: flex;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.user_info-introduce {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.delete-comment .delete-comment-button{
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background: #ff0000;
+    color: #eee;
+    width: 60px;
+    height: 30px;
+}
+
+.singlepost__container .alert__message p {
+    margin-top: 0 !important;
 }

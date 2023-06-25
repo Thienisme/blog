@@ -79,7 +79,7 @@ if(isset($_POST['submit'])){
             
             //chuyển hướng để đăng nhập
             $_SESSION['signup-success'] = "Đăng kí thành công!";
-            header('location: ' . ROOT_URL . 'signup.php');
+            header('location: ' . ROOT_URL . 'signin.php');
             die();
             
         }

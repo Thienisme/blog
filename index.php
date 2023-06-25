@@ -1,183 +1,129 @@
 <?php
 include 'partials/header.php';
+
+// fetch featured from database
+$featured_query = "SELECT * FROM posts WHERE is_featured = 1 AND is_published = 1";
+$featured_result = mysqli_query($connection, $featured_query);
+$featured = mysqli_fetch_assoc($featured_result);
+
+//fetch 9 pots from posts table
+$query = "SELECT * FROM posts WHERE is_published = 1 ORDER BY date_time DESC LIMIT 9";
+$posts = mysqli_query($connection, $query);
 ?>
 
 
+<!-- show featured posts if there's any  -->
+<?php if (mysqli_num_rows($featured_result) == 1) : ?>
     <section class="featured">
         <div class="container featured__container">
             <div class="post__thumbnail">
-                <img src="./images/blog8.jpg">
+                <img src="./images/<?= $featured['thumbnail'] ?>">
             </div>
             <div class="post__info">
-                <a href=""class="category__button">Wild Life</a>
-                <h2 class="post__title"><a href="post.html">Post vi du</a></h2>
+                <?php
+                // fetch category from categories table using category_id of post
+                $category_id = $featured['category_id'];
+                $category_query = "SELECT * FROM categories WHERE id = $category_id";
+                $category_result = mysqli_query($connection, $category_query);
+                $category  = mysqli_fetch_assoc($category_result);
+
+                ?>
+                <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $featured['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                <h2 class="post__title"><a href="<?= ROOT_URL ?>post.php?id=<?= $featured['id'] ?>"><?= $featured['title'] ?></a></h2>
                 <p class="post__body">
-                    Đây là một post ví dụ aaaaaaaaaaaabbbbbbbbbbbbbbbbbcccccccccccccccc aaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccc
+                    <?= substr($featured['body'], 0, 300) ?>...
                 </p>
                 <div class="post__author">
+                    <?php
+                    // fetch author from users table using author_id
+                    $author_id = $featured['author_id'];
+                    $author_query = "SELECT * FROM users WHERE id = $author_id";
+                    $author_result = mysqli_query($connection, $author_query);
+                    $author = mysqli_fetch_assoc($author_result);
+
+                    ?>
                     <div class="post__author-avatar">
-                        <img src="./images/avatar1.jpg">
+                        <img src="./images/<?= $author['avatar'] ?>">
                     </div>
                     <div class="post__author-info">
-                        <h5>By: Van Thien</h5>
-                        <small>May 4th, 2023 -6:20</small>
+                        <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                        <small>
+                            <?= date("M d, Y - H:i", strtotime($featured['date_time'])) ?>
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!--============END of Section===============-->
-    <section class="posts">
-        <div class="container posts__container">
+<?php endif ?>
+<!--============END of Fatured===============-->
+
+<section class="posts <?= $featured ? '' : 'section__extra-margin' ?>">
+    <div class="container posts__container">
+        <?php while ($post = mysqli_fetch_assoc($posts)) : ?>
             <article class="post">
                 <div class="post__thumbnail">
-                    <img src="./images/blog11.jpg">
+                    <img src="./images/<?= $post['thumbnail'] ?>">
                 </div>
                 <div class="post__info">
-                    <a href="category-posts.html" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
+                    <?php
+                    // fetch category from categories table using category_id of post
+                    $category_id = $post['category_id'];
+                    if (!is_null($category_id)) {
+                        $category_query = "SELECT * FROM categories WHERE id = $category_id";
+                        $category_result = mysqli_query($connection, $category_query);
+                        $category  = mysqli_fetch_assoc($category_result);
+                    }
+                    ?>
+                    <?php if (is_null($category_id)) : ?>
+                        <div class="category__button">Uncategory</div>
+                    <?php else : ?>
+                        <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $post['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                    <?php endif; ?>
+                    <h3 class="post__title">
+                        <a href="<?= ROOT_URL ?>post.php?id=<?= $post['id'] ?>"><?= $post['title'] ?></a>
+                    </h3>
+                    <p class="post__body">
+                        <?= substr($post['body'], 0, 150) ?>...
                     </p>
                     <div class="post__author">
+                        <?php
+                        // fetch author from users table using author_id
+                        $author_id = $post['author_id'];
+                        $author_query = "SELECT * FROM users WHERE id = $author_id";
+                        $author_result = mysqli_query($connection, $author_query);
+                        $author = mysqli_fetch_assoc($author_result);
+
+                        ?>
                         <div class="post__author-avatar">
-                            <img src="./images/avatar2.jpg">
+                            <img src="./images/<?= $author['avatar'] ?>">
                         </div>
                         <div class="post__author-info">
-                            <h5>By: Dang Duong                            </h5>
-                            <small>May3rd, 2022 -6:19</small>
+                            <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                            <small>
+                                <?= date("M d, Y - H:i", strtotime($post['date_time'])) ?>
+                            </small>
                         </div>
                     </div>
                 </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog2.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar12.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: Netzach                           </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog3.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar8.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: Roland                            </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog4.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar5.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: Hokma                           </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog7.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar10.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: Malkuth                            </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog17.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar6.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: Yesod                            </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            <article class="post">
-                <div class="post__thumbnail">
-                    <img src="./images/blog50.jpg">
-                </div>
-                <div class="post__info">
-                    <a href="" class="category__button">Wild Life</a>
-                    <h3 class="post__title"><a href="post.html"> Vi du thu hai</a></h3>
-                    <p class="post__body">Cum Historia Mutat valde Razgriz revelat ipsum    
-                    </p>
-                    <div class="post__author">
-                        <div class="post__author-avatar">
-                            <img src="./images/avatar12.jpg">
-                        </div>
-                        <div class="post__author-info">
-                            <h5>By: John Wick                         </h5>
-                            <small>May3rd, 2022 -6:19</small>
-                        </div>
-                    </div>
-                </div>
-            </article>            
-        </div>
-    </section>
-    <!--==========================END OF POSTS====================================-->
-    <section class="category__button">
-        <div class="container category__button-container">
-            <a href="" class="category__button">Art</a>
-            <a href="" class="category__button">Wild Life</a>
-            <a href="" class="category__button">Travel</a>
-            <a href="" class="category__button">Music</a>
-            <a href="" class="category__button">Science</a>
-            <a href="" class="category__button">Gaming</a>
-        </div>
-    </section>
-      <!--==========================END OF CB====================================-->
-  
+            </article>
+        <?php endwhile ?>
+    </div>
+</section>
+<!--==========================END OF POSTS====================================-->
+<section class="category__button">
+    <div class="container category__button-container">
+        <?php
+        $all_categories_query = "SELECT * FROM categories";
+        $all_categories = mysqli_query($connection, $all_categories_query);
+        ?>
+        <?php while ($category = mysqli_fetch_assoc($all_categories)) : ?>
+            <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $category['id'] ?>" class="category__button"><?= $category['title'] ?></a>
+        <?php endwhile ?>
+    </div>
+</section>
+<!--==========================END OF CB====================================-->
+
 
 <?php
 include 'partials/footer.php';

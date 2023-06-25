@@ -14,9 +14,9 @@
             <a href="index.html" class="nav__logo">BLOGGER</a>
             <ul class="nav__items">
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="about.html">About</a></li>
+                <!-- <li><a href="about.html">About</a></li>
                 <li><a href="service.html">Service</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html">Contact</a></li> -->
                 <!--<li><a href="signin.html">Signin</a></li>-->
                 <liv class="nav__profile">
                     <div class="avatar">
@@ -150,11 +150,11 @@
         <article>
             <h4>Permalinks</h4>
             <ul>
-                <li><a href="">Home</a></li>
+               <!-- <li><a href="">Home</a></li> -->
                 <li><a href="">Blog</a></li>
-                <li><a href="">About</a></li>
+                <!-- <li><a href="">About</a></li>
                 <li><a href="">Service</a></li>
-                <li><a href="">Contact</a></li>
+                <li><a href="">Contact</a></li> -->
             </ul>
         </article>
 

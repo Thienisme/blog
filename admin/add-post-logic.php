@@ -7,10 +7,12 @@ if (isset($_POST['submit'])) {
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $category_id = filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
     $is_featured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
+    $is_published = filter_var($_POST['is_published'], FILTER_SANITIZE_NUMBER_INT);
     $thumbnail = $_FILES['thumbnail'];
 
     //set is_featuredto 0 if unchecked
     $is_featured = $is_featured == 1?: 0;
+    $is_published = $is_published == 1?: 0;
 
     //validate fom data
     if(!$title) {
@@ -20,7 +22,7 @@ if (isset($_POST['submit'])) {
     } elseif(!$body) {
         $_SESSION['add-post'] = "Enter post body";
     } elseif(!$thumbnail['name']) {
-        $_SESSION['add-post'] = "choose post thumbnail";
+        $_SESSION['add-post'] = "Choose post thumbnail";
     } else {
         // WORK ON HUMBNAIL
         // rename the image
@@ -56,13 +58,13 @@ if (isset($_POST['submit'])) {
     } else {
         //set is_featured of all posts to0 if is_featured for this post is 1
         if($is_featured == 1) {
-            $zero_all_is_featured_query = "UPDATE post SET is_featured = 0";
+            $zero_all_is_featured_query = "UPDATE posts SET is_featured = 0";
             $zero_all_is_featured_result = mysqli_query($connection, $zero_all_is_featured_query);
         }
 
         //insert post into database
-        $query = "INSERT INTO posts (title, body, thumbnail, category_id, author_id, is_featured) VALUES
-        ('$title', '$body', '$thumbnail_name', $category_id, $author_id, $is_featured)";
+        $query = "INSERT INTO posts (title, body, thumbnail, category_id, author_id, is_featured , is_published) VALUES
+        ('$title', '$body', '$thumbnail_name', $category_id, $author_id, $is_featured, $is_published)";
         $result = mysqli_query($connection, $query);
 
         if(!mysqli_errno($connection)) {

@@ -10,13 +10,14 @@ if(isset($_SESSION['user-id'])){
 ?> 
 
 <!DOCTYPE html>
-~<head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Blog</title>
     <link rel="stylesheet" href="<?=  ROOT_URL ?>css/style.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800&display=swap" rel="stylesheet">xam
 </head>
 <body>
     <nav>
