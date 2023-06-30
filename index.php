@@ -23,12 +23,18 @@ $posts = mysqli_query($connection, $query);
                 <?php
                 // fetch category from categories table using category_id of post
                 $category_id = $featured['category_id'];
-                $category_query = "SELECT * FROM categories WHERE id = $category_id";
-                $category_result = mysqli_query($connection, $category_query);
-                $category  = mysqli_fetch_assoc($category_result);
+                if (!is_null($category_id)) {
+                    $category_query = "SELECT * FROM categories WHERE id = $category_id";
+                    $category_result = mysqli_query($connection, $category_query);
+                    $category  = mysqli_fetch_assoc($category_result);
+                }
 
                 ?>
-                <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $featured['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                <?php if (!is_null($category_id)) : ?>
+                    <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $featured['category_id'] ?>" class="category__button"><?= $category['title'] ?></a>
+                <?php else : ?>
+                    <div class="category__button">Uncategory</div>
+                <?php endif; ?>
                 <h2 class="post__title"><a href="<?= ROOT_URL ?>post.php?id=<?= $featured['id'] ?>"><?= $featured['title'] ?></a></h2>
                 <p class="post__body">
                     <?= substr($featured['body'], 0, 300) ?>...
@@ -46,7 +52,9 @@ $posts = mysqli_query($connection, $query);
                         <img src="./images/<?= $author['avatar'] ?>">
                     </div>
                     <div class="post__author-info">
-                        <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                        <a href="<?= ROOT_URL ?>profiles.php?id=<?= $author['id'] ?>">
+                            <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                        </a>
                         <small>
                             <?= date("M d, Y - H:i", strtotime($featured['date_time'])) ?>
                         </small>
@@ -99,7 +107,9 @@ $posts = mysqli_query($connection, $query);
                             <img src="./images/<?= $author['avatar'] ?>">
                         </div>
                         <div class="post__author-info">
-                            <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                            <a href="<?= ROOT_URL ?>profiles.php?id=<?= $author['id'] ?>">
+                                <h5>By:<?= "{$author['firstname']} {$author['lastname']}" ?></h5>
+                            </a>
                             <small>
                                 <?= date("M d, Y - H:i", strtotime($post['date_time'])) ?>
                             </small>

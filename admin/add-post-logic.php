@@ -16,13 +16,13 @@ if (isset($_POST['submit'])) {
 
     //validate fom data
     if(!$title) {
-        $_SESSION['add-post'] = "Enter post title";
+        $_SESSION['add-post'] = "Nhập tiêu đề bài viết";
     } elseif(!$category_id) {
-        $_SESSION['add-post'] = "Select post category";
+        $_SESSION['add-post'] = "Chọn danh mục bài viết";
     } elseif(!$body) {
-        $_SESSION['add-post'] = "Enter post body";
+        $_SESSION['add-post'] = "Nhập nội dung bài viết";
     } elseif(!$thumbnail['name']) {
-        $_SESSION['add-post'] = "Choose post thumbnail";
+        $_SESSION['add-post'] = "Chọn hình thu nhỏ của bài viết";
     } else {
         // WORK ON HUMBNAIL
         // rename the image
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
         $result = mysqli_query($connection, $query);
 
         if(!mysqli_errno($connection)) {
-            $_SESSION['add-post-success'] = "New post added successfully";
+            $_SESSION['add-post-success'] = "Đã thêm bài đăng mới thành công.";
             header('Location: ' . ROOT_URL . 'admin/');
             die(); 
         }

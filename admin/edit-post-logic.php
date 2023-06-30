@@ -20,11 +20,11 @@ if (isset($_POST['submit'])) {
     // check and validate input values
     
     if (!$title) {
-        $_SESSION['edit-post'] = "Couldn't update post. Invalid form data on edit post page.";
+        $_SESSION['edit-post'] = "Không thể cập nhật bài đăng. Dữ liệu biểu mẫu không hợp lệ trên trang chỉnh sửa bài đăng.";
     } elseif (!$category_id) {
-        $_SESSION['edit-post'] = "Couldn't update post. Invalid form data on edit post page."; 
+        $_SESSION['edit-post'] = "Không thể cập nhật bài đăng. Dữ liệu biểu mẫu không hợp lệ trên trang chỉnh sửa bài đăng."; 
     } elseif (!$body) {
-        $_SESSION['edit-post'] = "Couldn't update post. Invalid form data on edit post page.";
+        $_SESSION['edit-post'] = "Không thể cập nhật bài đăng. Dữ liệu biểu mẫu không hợp lệ trên trang chỉnh sửa bài đăng.";
     } else {
         // delete existing thumbnail if new thumbnail is available
         if ($thumbnail['name']) {
@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
     }
 
     if (!mysqli_errno($connection)) {
-        $_SESSION['edit-post-success'] = "Post updered successfully";
+        $_SESSION['edit-post-success'] = "Bài viết đã được cập nhật thành công";
     }
     header('Location: ' . ROOT_URL . 'admin/');
     die();

@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
         if (!mysqli_errno($connection)) {
             $update_result = mysqli_query($connection, $update_query);
         }
-        $_SESSION['delete-category-success'] = "Category deleted successfully";
+        $_SESSION['delete-category-success'] = " Đã xóa danh mục $title thành công";
     }
 }
 header('location: ' . ROOT_URL . 'admin/manage-categories.php');

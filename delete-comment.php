@@ -14,7 +14,7 @@ if(isset($_GET['comment_id'])) {
         $delete_comment_result = mysqli_query($connection, $delete_comment_query);
 
         if (!mysqli_errno($connection)) {
-            $_SESSION['delete-comment-success'] = "Comment deleted successfully";
+            $_SESSION['delete-comment-success'] = "Xóa bình luận thành công";
             header("Location: post.php?id=$post_id");
             exit();
         }

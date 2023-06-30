@@ -11,10 +11,14 @@ if (isset($_GET['id'])) {
     // Fetch comments for the post
     $comments_query = "SELECT * FROM comments WHERE post_id = $id ORDER BY created_at DESC";
     $comments_result = mysqli_query($connection, $comments_query);
-    $current_user_id = $_SESSION['user-id'];
-    $current_user_query = "SELECT * FROM users WHERE id = $current_user_id";
-    $current_user_result = mysqli_query($connection, $current_user_query);
-    $current_user = mysqli_fetch_assoc($current_user_result);
+
+    // Check if the user is logged in
+    $current_user_id = isset($_SESSION['user-id']) ? $_SESSION['user-id'] : null;
+    if ($current_user_id) {
+        $current_user_query = "SELECT * FROM users WHERE id = $current_user_id";
+        $current_user_result = mysqli_query($connection, $current_user_query);
+        $current_user = mysqli_fetch_assoc($current_user_result);
+    }
 } else {
     header('location:' . ROOT_URL . 'blog.php');
     die();
@@ -114,11 +118,12 @@ if (isset($_GET['id'])) {
                         }
                     }
                 } else {
-                    echo '<p>No comments yet.</p>';
+                    echo '<p>Chưa có bình luận nào.</p>';
                 }
                 ?>
             </div>
-            <div class="comment-box">
+            <?php if ($current_user_id) : ?>
+                <div class="comment-box">
                 <div class="user">
                     <div class="post__author-avatar">
                         <img src="./images/<?= $current_user['avatar'] ?>">
@@ -136,6 +141,9 @@ if (isset($_GET['id'])) {
                     <button type="submit" name="submit" class="comment-submit">Submit</button>
                 </form>
             </div>
+            <?php else : ?>
+                <p>Vui lòng đăng nhập để bình luận.</p>
+            <?php endif ?>
         </div>
     </div>
 </section>

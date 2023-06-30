@@ -68,7 +68,7 @@ if (isset($_GET['id'])) {
     </section>
 <?php else : ?>
     <div class="alert__message error lg">
-        <p>No posts found for this category</p>
+        <p>Không tìm thấy bài viết cho danh mục này.</p>
     </div>
 <?php endif ?>
 <!--==========================END OF POSTS====================================-->

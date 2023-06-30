@@ -8,15 +8,15 @@ if (isset($_POST['submit'])) {
 
     //validate input
     if (!$title || !$description) {
-        $_SESSION['edit-category'] = "Invalid from input on edit category page";
+        $_SESSION['edit-category'] = "Không hợp lệ từ đầu vào trên trang danh mục chỉnh sửa";
     } else {
         $query = "UPDATE categories SET title='$title', description='$description' WHERE id=$id LIMIT 1";
         $result = mysqli_query($connection, $query);
 
         if(mysqli_errno($connection)) {
-            $_SESSION['edit-category'] = "Could not update category";
+            $_SESSION['edit-category'] = "Không thể cập nhật danh mục";
         } else {
-            $_SESSION['edit-category-success'] = "Category $title updated successfully";
+            $_SESSION['edit-category-success'] = "Danh $title cập nhật thành công";
         }
     }
 }
